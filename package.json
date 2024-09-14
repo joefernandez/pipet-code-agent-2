@@ -16,7 +16,7 @@
     "commands": [
       {
         "command": "pipet-code-agent.codeQuestion",
-        "title": "Pipet: Ask a question about coding."
+        "title": "Pipet: Ask a coding question."
       },
       {
         "command": "pipet-code-agent.commentCode",

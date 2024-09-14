@@ -30,7 +30,7 @@ explanation of the code, just the comment to added:
 `;
 
 export async function generateComment() {
-    vscode.window.showInformationMessage('Generating comment...');
+    vscode.window.showInformationMessage('Generating code comment...');
 
     // Get selected text
     const editor = vscode.window.activeTextEditor;
