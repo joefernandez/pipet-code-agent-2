@@ -19,7 +19,7 @@ const http = require('http');
 
 export async function gemmaServiceRequest(requestText: String) {
 
-  // Get Gemma Service Host from local user configuration
+  // Get Gemma Service Host and port number from local user configuration
   const gemmaHost = vscode.workspace.getConfiguration().get<string>('gemma.service.host');
   if (!gemmaHost) {
     vscode.window.showErrorMessage('Gemma Service Host not configured. Check Pipet Code Agent settings.');
@@ -33,7 +33,7 @@ export async function gemmaServiceRequest(requestText: String) {
 
   const options = {
     hostname: gemmaHost, // web service hostname
-    port: 8000,
+    port: 8000, // web service port number
     path: '/gemma_request/', // web service endpoint path
     method: 'POST',
     headers: {

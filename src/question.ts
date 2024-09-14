@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import * as vscode from 'vscode';
+// import { geminiAPIRequest } from './models/gemini-api';
 import { gemmaServiceRequest } from './models/gemma-service';
-import { geminiAPIRequest } from './models/gemini-api';
 
 export async function answerQuestion() {
     vscode.window.showInformationMessage('Answering code question...');
@@ -36,8 +36,8 @@ export async function answerQuestion() {
 
     // Send the Gemma request and insert the response
     try {
-        const response: any = await geminiAPIRequest(promptText); // alternative
-        //const response: any = await gemmaServiceRequest(promptText);
+        // const response: any = await geminiAPIRequest(promptText); // alternative
+        const response: any = await gemmaServiceRequest(promptText);
         const responseText = response.toString();
         console.log(responseText);
 

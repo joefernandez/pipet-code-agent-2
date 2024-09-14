@@ -15,39 +15,24 @@
  */
 
 import * as vscode from 'vscode';
+import { getLineCommentCharacter } from './utility/commentChar';
 import { gemmaServiceRequest } from './models/gemma-service';
 // import { geminiAPIRequest } from './models/gemini-api';
 
-const CODE_LABEL = 'Here is the code:';
-const REVIEW_LABEL = 'Here is the review:';
-const PROMPT = `
+// Provide instructions for the AI model
+const PROMPT_INSTRUCTIONS = `
 Reviewing code involves finding bugs and increasing code quality. Examples of bugs are syntax 
 errors or typos, out of memory errors, and boundary value errors. Increasing code quality 
 entails reducing complexity of code, eliminating duplicate code, and ensuring other developers 
 are able to understand the code. 
-${CODE_LABEL}
-for i in x:
-    pint(f"Iteration {i} provides this {x**2}.")
-${REVIEW_LABEL}
-The command \`print\` is spelled incorrectly.
-${CODE_LABEL}
-height = [1, 2, 3, 4, 5]
-w = [6, 7, 8, 9, 10]
-${REVIEW_LABEL}
-The variable name \`w\` seems vague. Did you mean \`width\` or \`weight\`?
-${CODE_LABEL}
-while i < 0:
-  thrice = i * 3
-  thrice = i * 3
-  twice = i * 2
-${REVIEW_LABEL}
-There are duplicate lines of code in this control structure.
+
+Write a review of the following code:
 `;
 
 export async function generateReview() {
   vscode.window.showInformationMessage('Generating code review...');
 
-  // Text selection
+  // Get selected text
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
     console.debug('Abandon: no open text editor.');
@@ -57,12 +42,8 @@ export async function generateReview() {
   const selection = editor.selection;
   const selectedCode = editor.document.getText(selection);
 
-  // Build the full prompt using the template.
-  const promptText = `${PROMPT}
-    ${CODE_LABEL}
-    ${selectedCode}
-    ${REVIEW_LABEL}
-    `;
+  // Build the full prompt
+  const promptText = `${PROMPT_INSTRUCTIONS}${selectedCode}`;
 
   // Send the request and insert the response
   try {
@@ -76,8 +57,10 @@ export async function generateReview() {
       const trimmed = selectedCode.trimStart();
       const padding = selectedCode.substring(0, selectedCode.length - trimmed.length);
 
-      // TODO(you!): Support other comment styles.
-      const commentPrefix = '# ';
+      // Find the right comment character using the editor object  
+      const commentChar = getLineCommentCharacter(editor);
+      const commentPrefix = commentChar + ' ';
+
       let pyComment = comment.split('\n').map((l: string) => `${padding}${commentPrefix}${l}`).join('\n');
       if (pyComment.search(/\n$/) === -1) {
         // Add a final newline if necessary.

@@ -15,47 +15,24 @@
  */ 
 
 import * as vscode from 'vscode';
-import { gemmaServiceRequest } from './models/gemma-service';
+import { getLineCommentCharacter } from './utility/commentChar';
 // import { geminiAPIRequest } from './models/gemini-api';
+import { gemmaServiceRequest } from './models/gemma-service';
 
-// Provide instructions for the AI language model
-// This approach uses a few-shot technique, providing a few examples.
-const CODE_LABEL = 'Here is the code:';
-const COMMENT_LABEL = 'Here is a good comment:';
-const PROMPT = `
-A good code review comment describes the intent behind the code without
+// Provide instructions for the AI model
+const PROMPT_INSTRUCTIONS = `
+A good code comment describes the intent behind the code without
 repeating information that's obvious from the code itself. Good comments
 describe "why", explain any "magic" values and non-obvious behaviour.
-Below are some examples of good code comments.
 
-${CODE_LABEL}
-print(f" \\033[33m {msg}\\033[00m", file=sys.stderr)
-${COMMENT_LABEL}
-Use terminal codes to print color output to console.
-
-${CODE_LABEL}
-to_delete = set(data.keys()) - frozenset(keep)
-for key in to_delete:
-  del data[key]
-${COMMENT_LABEL}
-Modifies \`data\` to remove any entry not specified in the \`keep\` list.
-
-${CODE_LABEL}
-lines[text_range.start_line - 1:text_range.end_line - 1] = [repl.new_content]
-${COMMENT_LABEL}
-Replace text from \`lines\` with \`new_content\`, noting that array indices 
-are offset 1 from line numbers.
-
-${CODE_LABEL}
-api_key = os.getenv("GOOGLE_API_KEY")
-${COMMENT_LABEL}
-Attempt to load the API key from the environment.`;
-
+Write a comment that explains the following code. Do NOT include a separate
+explanation of the code, just the comment to added:
+`;
 
 export async function generateComment() {
     vscode.window.showInformationMessage('Generating comment...');
 
-    // Text selection
+    // Get selected text
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         console.debug('Abandon: no open text editor.');
@@ -65,13 +42,8 @@ export async function generateComment() {
     const selection = editor.selection;
     const selectedCode = editor.document.getText(selection);
 
-    // Build the full prompt using the template.
-    const promptText = `${PROMPT}
-
-${CODE_LABEL}
-${selectedCode}
-${COMMENT_LABEL}
-`;
+    // Build the full prompt
+    const promptText = `${PROMPT_INSTRUCTIONS}${selectedCode}`;
 
     // Send the request and insert the response
     try {
@@ -82,8 +54,9 @@ ${COMMENT_LABEL}
 
         // Insert before selection.
         editor.edit((editBuilder) => {
-            // TODO(you!): Support other comment styles.
-            const commentPrefix = '# ';
+            // Find the right comment character using the editor object  
+            const commentChar = getLineCommentCharacter(editor);
+            const commentPrefix = commentChar + ' ';
 
             // Copy the indent from the first line of the selection.
             const trimmed = selectedCode.trimStart();
