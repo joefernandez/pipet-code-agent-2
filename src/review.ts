@@ -21,10 +21,10 @@ import { gemmaServiceRequest } from './models/gemma-service';
 
 // Provide instructions for the AI model
 const PROMPT_INSTRUCTIONS = `
-Reviewing code involves finding bugs and increasing code quality. Examples of bugs are syntax 
-errors or typos, out of memory errors, and boundary value errors. Increasing code quality 
-entails reducing complexity of code, eliminating duplicate code, and ensuring other developers 
-are able to understand the code. 
+Reviewing code involves finding bugs and increasing code quality. Examples of bugs 
+are syntax errors or typos, out of memory errors, and boundary value errors. Increasing
+code quality entails reducing complexity of code, eliminating duplicate code, and ensuring other developers are able to understand the code. 
+Also note performance improvements.
 
 Write a review of the following code:
 `;

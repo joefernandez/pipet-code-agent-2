@@ -25,6 +25,10 @@
       {
         "command": "pipet-code-agent.reviewCode",
         "title": "Pipet: Review the selected code."
+      },
+      {
+        "command": "pipet-code-agent.newService",
+        "title": "Pipet: Generate a FastAPI service."
       }
     ],
     "configuration": [

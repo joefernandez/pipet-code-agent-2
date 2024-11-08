@@ -18,12 +18,14 @@ import * as vscode from 'vscode';
 import { generateComment } from './comments';
 import { generateReview } from './review';
 import { answerQuestion } from './question';
+import { newService } from './new-service';
 
 
 export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('pipet-code-agent.commentCode', generateComment);
     vscode.commands.registerCommand('pipet-code-agent.reviewCode', generateReview);
     vscode.commands.registerCommand('pipet-code-agent.codeQuestion', answerQuestion);
+    vscode.commands.registerCommand('pipet-code-agent.newService', newService);
 }
 
 export function deactivate() { }
