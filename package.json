@@ -1,6 +1,6 @@
 {
   "name": "pipet-code-agent",
-  "publisher": "Google AI Developer Relations",
+  "publisher": "joefernandez007",
   "displayName": "Pipet Code Agent 2",
   "description": "",
   "version": "0.0.2",
@@ -42,6 +42,14 @@
             ],
             "default": null,
             "markdownDescription": "Enter the hostname or IP address for the Gemma server."
+          },
+          "gemma.ollama.host": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": "localhost",
+            "markdownDescription": "Enter the hostname or IP address for an Ollama server with Gemma."
           },
           "google.gemini.apiKey": {
             "type": [

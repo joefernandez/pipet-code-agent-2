@@ -15,7 +15,8 @@
  */
 import * as vscode from 'vscode';
 // import { geminiAPIRequest } from './models/gemini-api';
-import { gemmaServiceRequest } from './models/gemma-service';
+// import { gemmaServiceRequest } from './models/gemma-service';
+import { gemmaServiceRequest } from './models/gemma-ollama';
 
 export async function answerQuestion() {
     vscode.window.showInformationMessage('Answering code question...');

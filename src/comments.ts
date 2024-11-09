@@ -17,7 +17,8 @@
 import * as vscode from 'vscode';
 import { getLineCommentCharacter } from './utility/commentChar';
 // import { geminiAPIRequest } from './models/gemini-api';
-import { gemmaServiceRequest } from './models/gemma-service';
+// import { gemmaServiceRequest } from './models/gemma-service';
+import { gemmaServiceRequest } from './models/gemma-ollama';
 
 // Provide instructions for the AI model
 const PROMPT_INSTRUCTIONS = `
